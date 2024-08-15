@@ -294,7 +294,7 @@ function ElectionResultsPage() {
                   key={index}
                   label={item.name}
                   component="a"
-                  href={`/cities/${item.id}`}
+                  href={`/province/${item.id}`}
                   clickable
                   style={{
                     fontSize: "20px",
@@ -319,7 +319,7 @@ function ElectionResultsPage() {
                   key={index}
                   label={item.name}
                   component="a"
-                  href={`/cities/${item.id}`}
+                  href={`/region/${item.id}`}
                   clickable
                   style={{
                     fontSize: "20px",
