@@ -83,6 +83,21 @@
           },
           {
             "position_id": 1,
+            "candidate": "Candidate ER",
+            "votes": 112347
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate TH",
+            "votes": 987211
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate XR",
+            "votes": 789200
+          },
+          {
+            "position_id": 1,
             "candidate": "Candidate HG",
             "votes": 7878
           },
@@ -122,6 +137,21 @@
             "position_id": 1,
             "candidate": "Candidate HG",
             "votes": 96222
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate ER",
+            "votes": 7897874
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate TH",
+            "votes": 7898792
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate XR",
+            "votes": 789725
           },
           {
             "position_id": 2,
