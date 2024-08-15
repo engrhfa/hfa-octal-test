@@ -34,87 +34,101 @@ function ElectionResultsPage() {
     setValue(newValue);
   };
 
-  // Create mappings for cities, provinces, regions, and major islands
-  const cityMap = {};
-  const provinceMap = {};
-  const regionMap = {};
-  const islandMap = {};
+// Create mappings for cities, provinces, regions, and major islands
+const cityMap = {};
+const provinceMap = {};
+const regionMap = {};
+const islandMap = {};
 
-  // Populate the mappings
-  results.cities.forEach((city) => {
-    cityMap[city.id] = {
-      name: city.name,
-      province_id: city.province_id,
-      region_id: city.region_id,
-      major_island_id: city.major_island_id,
-    };
-  });
-
-  results.provinces.forEach((province) => {
-    provinceMap[province.id] = {
-      name: province.name,
-      region_id: province.region_id,
-      major_island_id: province.major_island_id,
-    };
-  });
-
-  results.regions.forEach((region) => {
-    regionMap[region.id] = {
-      name: region.name,
-      major_island_id: region.major_island_id,
-    };
-  });
-
-  results.major_islands.forEach((island) => {
-    islandMap[island.id] = island.name;
-  });
-
-  // To store results by position
-  const resultsByPosition = {};
-
-  // Initialize positions
-  const positions = {
-    1: "Presidential",
-    2: "Vice President",
+// Populate the mappings
+results.cities.forEach((city) => {
+  cityMap[city.id] = {
+    name: city.name,
+    province_id: city.province_id,
+    region_id: city.region_id,
+    major_island_id: city.major_island_id,
   };
+});
 
-  // Process the election results
-  results.election_results.forEach((cityResult) => {
-    const city = cityMap[cityResult.city_id];
-    const province = provinceMap[cityResult.province_id];
-    const region = regionMap[cityResult.region_id];
-    const island = islandMap[cityResult.major_island_id];
+results.provinces.forEach((province) => {
+  provinceMap[province.id] = {
+    name: province.name,
+    region_id: province.region_id,
+    major_island_id: province.major_island_id,
+  };
+});
 
-    cityResult.results.forEach((result) => {
-      const position = positions[result.position_id];
-      const candidate = result.candidate;
-      const votes = result.votes;
+results.regions.forEach((region) => {
+  regionMap[region.id] = {
+    name: region.name,
+    major_island_id: region.major_island_id,
+  };
+});
 
-      if (!resultsByPosition[position]) {
-        resultsByPosition[position] = {
-          totalVotes: {},
-          perCity: {},
-          perRegion: {},
-          perIsland: {},
-        };
-      }
+results.major_islands.forEach((island) => {
+  islandMap[island.id] = island.name;
+});
 
-      // Update total votes per candidate globally
-      if (!resultsByPosition[position].totalVotes[candidate]) {
-        resultsByPosition[position].totalVotes[candidate] = {
-          candidate,
-          votes: 0,
-        };
-      }
-      resultsByPosition[position].totalVotes[candidate].votes += votes;
+// Debugging logs for mappings
+console.log('City Map:', cityMap);
+console.log('Province Map:', provinceMap);
+console.log('Region Map:', regionMap);
+console.log('Island Map:', islandMap);
 
-      // Initialize per-city results
-      if (!resultsByPosition[position].perCity[cityResult.name]) {
-        resultsByPosition[position].perCity[cityResult.name] = [];
+// To store results by position
+const resultsByPosition = {};
+
+// Initialize positions
+const positions = {
+  1: "President",
+  2: "Vice President",
+};
+
+// Process the election results
+results.election_results.forEach((cityResult) => {
+  console.log("Processing cityResult:", cityResult);
+
+  const city = cityMap[cityResult.city_id];
+  const province = provinceMap[cityResult.province_id];
+  const region = regionMap[cityResult.region_id];
+  const island = islandMap[cityResult.major_island_id];
+
+  console.log('City:', city);
+  console.log('Province:', province);
+  console.log('Region:', region);
+  console.log('Island:', island);
+
+  cityResult.results.forEach((result) => {
+    const position = positions[result.position_id];
+    const candidate = result.candidate;
+    const votes = result.votes;
+
+    if (!resultsByPosition[position]) {
+      resultsByPosition[position] = {
+        totalVotes: {},
+        perCity: {},
+        perRegion: {},
+        perIsland: {},
+      };
+    }
+
+    // Update total votes per candidate globally
+    if (!resultsByPosition[position].totalVotes[candidate]) {
+      resultsByPosition[position].totalVotes[candidate] = {
+        candidate,
+        votes: 0,
+      };
+    }
+    resultsByPosition[position].totalVotes[candidate].votes += votes;
+
+    // Initialize per-city results
+    if (city) {
+      if (!resultsByPosition[position].perCity[city.name]) {
+        resultsByPosition[position].perCity[city.name] = [];
       }
 
       // Update total votes per candidate per city
-      const cityEntry = resultsByPosition[position].perCity[cityResult.name];
+      const cityEntry = resultsByPosition[position].perCity[city.name];
       const cityCandidateEntry = cityEntry.find(
         (entry) => entry.candidate === candidate
       );
@@ -123,8 +137,12 @@ function ElectionResultsPage() {
       } else {
         cityCandidateEntry.votes += votes;
       }
+    } else {
+      console.error(`City with ID ${cityResult.city_id} not found.`);
+    }
 
-      // Initialize per-region results
+    // Initialize per-region results
+    if (region) {
       if (!resultsByPosition[position].perRegion[region.name]) {
         resultsByPosition[position].perRegion[region.name] = [];
       }
@@ -139,8 +157,12 @@ function ElectionResultsPage() {
       } else {
         regionCandidateEntry.votes += votes;
       }
+    } else {
+      console.error(`Region with ID ${cityResult.region_id} not found.`);
+    }
 
-      // Initialize per-island results
+    // Initialize per-island results
+    if (island) {
       if (!resultsByPosition[position].perIsland[island]) {
         resultsByPosition[position].perIsland[island] = [];
       }
@@ -155,58 +177,61 @@ function ElectionResultsPage() {
       } else {
         islandCandidateEntry.votes += votes;
       }
-    });
+    } else {
+      console.error(`Island with ID ${cityResult.major_island_id} not found.`);
+    }
   });
+});
 
-  // Sort the results in descending order of votes and add rankings
-  for (const position in resultsByPosition) {
-    // Sort and rank total votes per candidate
-    const totalVotes = Object.values(resultsByPosition[position].totalVotes);
-    totalVotes.sort((a, b) => b.votes - a.votes);
-    totalVotes.forEach((entry, index) => {
+// Sort the results in descending order of votes and add rankings
+for (const position in resultsByPosition) {
+  // Sort and rank total votes per candidate
+  const totalVotes = Object.values(resultsByPosition[position].totalVotes);
+  totalVotes.sort((a, b) => b.votes - a.votes);
+  totalVotes.forEach((entry, index) => {
+    entry.ranking = formatOrdinalNumber(index + 1);
+  });
+  resultsByPosition[position].totalVotes = totalVotes;
+
+  // Sort and rank votes per city
+  for (const city in resultsByPosition[position].perCity) {
+    resultsByPosition[position].perCity[city].sort(
+      (a, b) => b.votes - a.votes
+    );
+    resultsByPosition[position].perCity[city].forEach((entry, index) => {
       entry.ranking = formatOrdinalNumber(index + 1);
     });
-    resultsByPosition[position].totalVotes = totalVotes;
-
-    // Sort and rank votes per city
-    for (const city in resultsByPosition[position].perCity) {
-      resultsByPosition[position].perCity[city].sort(
-        (a, b) => b.votes - a.votes
-      );
-      resultsByPosition[position].perCity[city].forEach((entry, index) => {
-        entry.ranking = formatOrdinalNumber(index + 1);
-      });
-    }
-
-    // Sort and rank votes per region
-    for (const region in resultsByPosition[position].perRegion) {
-      resultsByPosition[position].perRegion[region].sort(
-        (a, b) => b.votes - a.votes
-      );
-      resultsByPosition[position].perRegion[region].forEach((entry, index) => {
-        entry.ranking = formatOrdinalNumber(index + 1);
-      });
-    }
-
-    // Sort and rank votes per major island
-    for (const island in resultsByPosition[position].perIsland) {
-      resultsByPosition[position].perIsland[island].sort(
-        (a, b) => b.votes - a.votes
-      );
-      resultsByPosition[position].perIsland[island].forEach((entry, index) => {
-        entry.ranking = formatOrdinalNumber(index + 1);
-      });
-    }
   }
 
-  // Function to format ordinal numbers
-  function formatOrdinalNumber(n) {
-    const suffixes = ["th", "st", "nd", "rd"];
-    const v = n % 100;
-    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  // Sort and rank votes per region
+  for (const region in resultsByPosition[position].perRegion) {
+    resultsByPosition[position].perRegion[region].sort(
+      (a, b) => b.votes - a.votes
+    );
+    resultsByPosition[position].perRegion[region].forEach((entry, index) => {
+      entry.ranking = formatOrdinalNumber(index + 1);
+    });
   }
 
-  console.log("Results by Position:", resultsByPosition);
+  // Sort and rank votes per major island
+  for (const island in resultsByPosition[position].perIsland) {
+    resultsByPosition[position].perIsland[island].sort(
+      (a, b) => b.votes - a.votes
+    );
+    resultsByPosition[position].perIsland[island].forEach((entry, index) => {
+      entry.ranking = formatOrdinalNumber(index + 1);
+    });
+  }
+}
+
+// Function to format ordinal numbers
+function formatOrdinalNumber(n) {
+  const suffixes = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+}
+
+console.log("Results by Position:", resultsByPosition);
 
   return (
     <>
@@ -234,7 +259,7 @@ function ElectionResultsPage() {
           }}
         >
           <ResultsCard title={"President"}>
-            {resultsByPosition.Presidential.totalVotes.map((item) => {
+            {resultsByPosition.President.totalVotes.map((item) => {
               return <CandidateCard {...item} />;
             })}
           </ResultsCard>
@@ -332,8 +357,7 @@ function ElectionResultsPage() {
               );
             })}
           </TabPanel>
-          <TabPanel 
-            id="provinces" value={value} index={1}>
+          <TabPanel id="provinces" value={value} index={1}>
             {results.provinces.map((item) => {
               return (
                 <Chip
@@ -357,8 +381,7 @@ function ElectionResultsPage() {
               );
             })}
           </TabPanel>
-          <TabPanel 
-            id="regions" value={value} index={2}>
+          <TabPanel id="regions" value={value} index={2}>
             {results.regions.map((item) => {
               return (
                 <Chip

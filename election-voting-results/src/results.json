@@ -48,7 +48,7 @@
         "major_island_id": 1
       },
       {
-        "id": 4,
+        "id": 2,
         "name": "Cebu City",
         "province_id": 2,
         "region_id": 2,
@@ -70,6 +70,7 @@
         "city_id": 1,
         "province_id": 1,
         "region_id": 1,
+        "major_island_id": 1,
         "results": [
           {
             "position_id": 1,
@@ -122,6 +123,7 @@
         "city_id": 2,
         "province_id": 2,
         "region_id": 2,
+        "major_island_id": 2,
         "results": [
           {
             "position_id": 1,
