@@ -1,0 +1,146 @@
+{
+    "major_islands": [
+      {
+        "id": 1,
+        "name": "Luzon"
+      },
+      {
+        "id": 2,
+        "name": "Visayas"
+      },
+      {
+        "id": 3,
+        "name": "Mindanao"
+      }
+    ],
+    "regions": [
+      {
+        "id": 1,
+        "name": "NCR (National Capital Region)",
+        "major_island_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Region VII (Central Visayas)",
+        "major_island_id": 2
+      }
+    ],
+    "provinces": [
+      {
+        "id": 1,
+        "name": "Metro Manila",
+        "region_id": 1,
+        "major_island_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Cebu",
+        "region_id": 2,
+        "major_island_id": 2
+      }
+    ],
+    "cities": [
+      {
+        "id": 1,
+        "name": "Manila",
+        "province_id": 1,
+        "region_id": 1,
+        "major_island_id": 1
+      },
+      {
+        "id": 4,
+        "name": "Cebu City",
+        "province_id": 2,
+        "region_id": 2,
+        "major_island_id": 2
+      }
+    ],
+    "positions": [
+      {
+        "id": 1,
+        "name": "President"
+      },
+      {
+        "id": 2,
+        "name": "Vice President"
+      }
+    ],
+    "election_results": [
+      {
+        "city_id": 1,
+        "province_id": 1,
+        "region_id": 1,
+        "results": [
+          {
+            "position_id": 1,
+            "candidate": "Candidate A",
+            "votes": 78978978
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate HS",
+            "votes": 78979
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate HG",
+            "votes": 7878
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate B",
+            "votes": 78782
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate BFF",
+            "votes": 222212
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate WET",
+            "votes": 627879
+          }
+        ]
+      },
+      {
+        "city_id": 2,
+        "province_id": 2,
+        "region_id": 2,
+        "results": [
+          {
+            "position_id": 1,
+            "candidate": "Candidate A",
+            "votes": 685169
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate HS",
+            "votes": 4564564646
+          },
+          {
+            "position_id": 1,
+            "candidate": "Candidate HG",
+            "votes": 96222
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate B",
+            "votes": 756
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate BFF",
+            "votes": 788982
+          },
+          {
+            "position_id": 2,
+            "candidate": "Candidate WET",
+            "votes": 21388
+          }
+        ]
+      }
+    ],
+    "country": "Philippines"
+  }
+  
